@@ -24,7 +24,7 @@ variable "jumphost_username" {
 }
 
 variable "jumphost_password" {
-  default = "Venyon2021!!!"
+  default = "Ch@ng3m32021!!!"
 }
 
 variable "prefix" {
