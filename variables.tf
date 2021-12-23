@@ -12,7 +12,7 @@ variable "workspace_display_name" {
 }
 
 variable "location" {
-  default = "West Europe"
+  default = "East US"
 }
 
 variable "deploy_aks" {
@@ -20,11 +20,11 @@ variable "deploy_aks" {
 }
 
 variable "jumphost_username" {
-  default = "azureuser"
+  default = "akadmin"
 }
 
 variable "jumphost_password" {
-  default = "ThisIsNotVerySecure!"
+  default = "Venyon2021!!!"
 }
 
 variable "prefix" {
