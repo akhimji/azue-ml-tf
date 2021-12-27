@@ -19,4 +19,8 @@ provider "azurerm" {
 }
 
 data "azurerm_client_config" "current" {}
-#resource "azurerm_resource_group" "ak-ml-rg" {}
+
+#resource "azurerm_resource_group" "ak-ml-rg" {
+#  name     = var.resource_group
+#  location = var.location
+#}
