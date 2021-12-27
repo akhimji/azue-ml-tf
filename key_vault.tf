@@ -7,8 +7,8 @@
 
 resource "azurerm_key_vault" "aml_kv" {
   name                = "${var.prefix}-kv-${random_string.postfix.result}"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
   tenant_id           = data.azurerm_client_config.current.tenant_id
   sku_name            = "standard"
 
@@ -24,14 +24,14 @@ resource "azurerm_key_vault" "aml_kv" {
 
 resource "azurerm_private_dns_zone" "kv_zone" {
   name                = "privatelink.vaultcore.azure.net"
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  resource_group_name = var.resource_group
 }
 
 # Linking of DNS zones to Virtual Network
 
 resource "azurerm_private_dns_zone_virtual_network_link" "kv_zone_link" {
   name                  = "${random_string.postfix.result}_link_kv"
-  resource_group_name   = azurerm_resource_group.aml_rg.name
+  resource_group_name   = var.resource_group 
   private_dns_zone_name = azurerm_private_dns_zone.kv_zone.name
   virtual_network_id    = azurerm_virtual_network.aml_vnet.id
 }
@@ -40,8 +40,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "kv_zone_link" {
 
 resource "azurerm_private_endpoint" "kv_pe" {
   name                = "${var.prefix}-kv-pe-${random_string.postfix.result}"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
   subnet_id           = azurerm_subnet.aml_subnet.id
 
   private_service_connection {

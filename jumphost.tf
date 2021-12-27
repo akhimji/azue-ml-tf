@@ -7,8 +7,8 @@
 
 resource "azurerm_network_interface" "jumphost_nic" {
   name                = "jumphost-nic"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
 
   ip_configuration {
     name                          = "configuration"
@@ -20,8 +20,8 @@ resource "azurerm_network_interface" "jumphost_nic" {
 
 resource "azurerm_network_security_group" "jumphost_nsg" {
   name                = "jumphost-nsg"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
 
   security_rule {
     name                       = "RDP"
@@ -43,8 +43,8 @@ resource "azurerm_network_interface_security_group_association" "jumphost_nsg_as
 
 resource "azurerm_virtual_machine" "jumphost" {
   name                  = "jumphost"
-  location              = azurerm_resource_group.aml_rg.location
-  resource_group_name   = azurerm_resource_group.aml_rg.name
+  location              = var.location
+  resource_group_name   = var.resource_group 
   network_interface_ids = [azurerm_network_interface.jumphost_nic.id]
   vm_size               = "Standard_DS3_v2"
 
@@ -83,7 +83,7 @@ resource "azurerm_virtual_machine" "jumphost" {
 
 resource "azurerm_dev_test_global_vm_shutdown_schedule" "jumphost_schedule" {
   virtual_machine_id = azurerm_virtual_machine.jumphost.id
-  location           = azurerm_resource_group.aml_rg.location
+  location           = var.location
   enabled            = true
 
   daily_recurrence_time = "2000"

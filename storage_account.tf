@@ -7,8 +7,8 @@
 
 resource "azurerm_storage_account" "aml_sa" {
   name                     = "${var.prefix}sa${random_string.postfix.result}"
-  location                 = azurerm_resource_group.aml_rg.location
-  resource_group_name      = azurerm_resource_group.aml_rg.name
+  location                 = var.location
+  resource_group_name      = var.resource_group
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
@@ -16,7 +16,7 @@ resource "azurerm_storage_account" "aml_sa" {
 # Virtual Network & Firewall configuration
 
 resource "azurerm_storage_account_network_rules" "firewall_rules" {
-  resource_group_name  = azurerm_resource_group.aml_rg.name
+  resource_group_name      = var.resource_group
   storage_account_name = azurerm_storage_account.aml_sa.name
 
   default_action             = "Deny"
@@ -32,26 +32,26 @@ resource "azurerm_storage_account_network_rules" "firewall_rules" {
 
 resource "azurerm_private_dns_zone" "sa_zone_blob" {
   name                = "privatelink.blob.core.windows.net"
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  resource_group_name = var.resource_group
 }
 
 resource "azurerm_private_dns_zone" "sa_zone_file" {
   name                = "privatelink.file.core.windows.net"
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  resource_group_name = var.resource_group
 }
 
 # Linking of DNS zones to Virtual Network
 
 resource "azurerm_private_dns_zone_virtual_network_link" "sa_zone_blob_link" {
   name                  = "${random_string.postfix.result}_link_blob"
-  resource_group_name   = azurerm_resource_group.aml_rg.name
+  resource_group_name   = var.resource_group 
   private_dns_zone_name = azurerm_private_dns_zone.sa_zone_blob.name
   virtual_network_id    = azurerm_virtual_network.aml_vnet.id
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "sa_zone_file_link" {
   name                  = "${random_string.postfix.result}_link_file"
-  resource_group_name   = azurerm_resource_group.aml_rg.name
+  resource_group_name   = var.resource_group 
   private_dns_zone_name = azurerm_private_dns_zone.sa_zone_file.name
   virtual_network_id    = azurerm_virtual_network.aml_vnet.id
 }
@@ -60,8 +60,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "sa_zone_file_link" {
 
 resource "azurerm_private_endpoint" "sa_pe_blob" {
   name                = "${var.prefix}-sa-pe-blob-${random_string.postfix.result}"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
   subnet_id           = azurerm_subnet.aml_subnet.id
 
   private_service_connection {
@@ -79,8 +79,8 @@ resource "azurerm_private_endpoint" "sa_pe_blob" {
 
 resource "azurerm_private_endpoint" "sa_pe_file" {
   name                = "${var.prefix}-sa-pe-file-${random_string.postfix.result}"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
   subnet_id           = azurerm_subnet.aml_subnet.id
 
   private_service_connection {

@@ -8,8 +8,8 @@
 resource "azurerm_kubernetes_cluster" "aml_aks" {
   count               = var.deploy_aks ? 1 : 0
   name                = "${var.prefix}-aks-${random_string.postfix.result}"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
   dns_prefix          = "aks"
 
   default_node_pool {

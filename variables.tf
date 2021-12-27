@@ -3,8 +3,10 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
+
+
 variable "resource_group" {
-  default = "aml-terraform-demo"
+  default = "ak-ml-rg"
 }
 
 variable "workspace_display_name" {
@@ -12,7 +14,7 @@ variable "workspace_display_name" {
 }
 
 variable "location" {
-  default = "East US"
+  default = "eastus"
 }
 
 variable "deploy_aks" {

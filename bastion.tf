@@ -5,16 +5,16 @@
 
 resource "azurerm_public_ip" "bastion_ip" {
   name                = "${var.prefix}-public-ip-bastion"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
   allocation_method   = "Static"
   sku                 = "Standard"
 }
 
 resource "azurerm_bastion_host" "jumphost_bastion" {
   name                = "${var.prefix}-bastion-host"
-  location            = azurerm_resource_group.aml_rg.location
-  resource_group_name = azurerm_resource_group.aml_rg.name
+  location            = var.location
+  resource_group_name = var.resource_group
 
   ip_configuration {
     name                 = "configuration"

@@ -7,8 +7,8 @@
 
 resource "azurerm_container_registry" "aml_acr" {
   name                     = "${var.prefix}acr${random_string.postfix.result}"
-  resource_group_name      = azurerm_resource_group.aml_rg.name
-  location                 = azurerm_resource_group.aml_rg.location
+  resource_group_name      = var.resource_group
+  location                 = var.location
   sku                      = "Standard"
   admin_enabled            = true
 }
