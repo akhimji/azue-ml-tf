@@ -15,6 +15,7 @@ variable "workspace_display_name" {
 
 variable "location" {
   default = "eastus"
+  #default = "canadacentral"
 }
 
 variable "deploy_aks" {
