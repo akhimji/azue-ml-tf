@@ -56,18 +56,6 @@ resource "azurerm_machine_learning_compute_instance" "aml_ws" {
   description                   = "ML Compute"
 }
 
-#resource "null_resource" "compute_resouces" {
-#  provisioner "local-exec" {
-#    command="az ml computetarget create amlcompute --max-nodes 1 --min-nodes 0 --name cpu-cluster --vm-size Standard_DS2_v2 --idle-seconds-before-scaledown 600 --assign-identity [system] --vnet-name ${azurerm_subnet.compute_subnet.virtual_network_name} --subnet-name ${azurerm_subnet.compute_subnet.name} --vnet-resourcegroup-name ${azurerm_subnet.compute_subnet.resource_group_name} --resource-group ${azurerm_machine_learning_workspace.aml_ws.resource_group_name} --workspace-name ${azurerm_machine_learning_workspace.aml_ws.name}"
-#  }
-
-#resource "null_resource" "compute_resouces" {
-#  provisioner "local-exec" {
-#    command="az ml computetarget create computeinstance --name ci-${random_string.postfix.result}-test --vm-size Standard_DS3_v2 --vnet-name ${azurerm_subnet.compute_subnet.virtual_network_name} --subnet-name ${azurerm_subnet.compute_subnet.name} --vnet-resourcegroup-name ${azurerm_subnet.compute_subnet.resource_group_name} --resource-group ${azurerm_machine_learning_workspace.aml_ws.resource_group_name} --workspace-name ${azurerm_machine_learning_workspace.aml_ws.name}"
-#  }
-# 
-#  depends_on = [azurerm_machine_learning_workspace.aml_ws]
-#}
 
 # DNS Zones
 
