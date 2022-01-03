@@ -22,17 +22,52 @@ resource "azurerm_machine_learning_workspace" "aml_ws" {
 
 # Create Compute Resources in AML
 
-resource "null_resource" "compute_resouces" {
-  provisioner "local-exec" {
-    command="az ml computetarget create amlcompute --max-nodes 1 --min-nodes 0 --name cpu-cluster --vm-size Standard_DS2_v2 --idle-seconds-before-scaledown 600 --assign-identity [system] --vnet-name ${azurerm_subnet.compute_subnet.virtual_network_name} --subnet-name ${azurerm_subnet.compute_subnet.name} --vnet-resourcegroup-name ${azurerm_subnet.compute_subnet.resource_group_name} --resource-group ${azurerm_machine_learning_workspace.aml_ws.resource_group_name} --workspace-name ${azurerm_machine_learning_workspace.aml_ws.name}"
+resource "azurerm_machine_learning_compute_cluster" "aml_ws" {
+  name                          = "cpu-cluster"
+  location                      = var.location
+  vm_priority                   = "LowPriority"
+  vm_size                       = "Standard_DS2_v2"
+  machine_learning_workspace_id = azurerm_machine_learning_workspace.aml_ws.id
+  subnet_resource_id            = azurerm_subnet.compute_subnet.id
+  #vnet-name                    = azurerm_subnet.compute_subnet.virtual_network_name
+  #subnet-name                  = azurerm_subnet.compute_subnet.name
+  #vnet-resourcegroup-name      = azurerm_subnet.compute_subnet.resource_group_name
+  #resource-group               = azurerm_machine_learning_workspace.aml_ws.resource_group_name
+  #workspace-name               = azurerm_machine_learning_workspace.aml_ws.name
+
+  scale_settings {
+    min_node_count                       = 0
+    max_node_count                       = 3
+    scale_down_nodes_after_idle_duration = "PT600S" # 30 seconds
   }
 
-  provisioner "local-exec" {
-    command="az ml computetarget create computeinstance --name ci-${random_string.postfix.result}-test --vm-size Standard_DS3_v2 --vnet-name ${azurerm_subnet.compute_subnet.virtual_network_name} --subnet-name ${azurerm_subnet.compute_subnet.name} --vnet-resourcegroup-name ${azurerm_subnet.compute_subnet.resource_group_name} --resource-group ${azurerm_machine_learning_workspace.aml_ws.resource_group_name} --workspace-name ${azurerm_machine_learning_workspace.aml_ws.name}"
+  identity {
+    type = "SystemAssigned"
   }
- 
-  depends_on = [azurerm_machine_learning_workspace.aml_ws]
 }
+
+
+resource "azurerm_machine_learning_compute_instance" "aml_ws" {
+  name                          = "ml-aml-ws"
+  location                      = var.location
+  machine_learning_workspace_id = azurerm_machine_learning_workspace.aml_ws.id
+  virtual_machine_size          = "Standard_DS3_v2"
+  subnet_resource_id            = azurerm_subnet.compute_subnet.id
+  description                   = "ML Compute"
+}
+
+#resource "null_resource" "compute_resouces" {
+#  provisioner "local-exec" {
+#    command="az ml computetarget create amlcompute --max-nodes 1 --min-nodes 0 --name cpu-cluster --vm-size Standard_DS2_v2 --idle-seconds-before-scaledown 600 --assign-identity [system] --vnet-name ${azurerm_subnet.compute_subnet.virtual_network_name} --subnet-name ${azurerm_subnet.compute_subnet.name} --vnet-resourcegroup-name ${azurerm_subnet.compute_subnet.resource_group_name} --resource-group ${azurerm_machine_learning_workspace.aml_ws.resource_group_name} --workspace-name ${azurerm_machine_learning_workspace.aml_ws.name}"
+#  }
+
+#resource "null_resource" "compute_resouces" {
+#  provisioner "local-exec" {
+#    command="az ml computetarget create computeinstance --name ci-${random_string.postfix.result}-test --vm-size Standard_DS3_v2 --vnet-name ${azurerm_subnet.compute_subnet.virtual_network_name} --subnet-name ${azurerm_subnet.compute_subnet.name} --vnet-resourcegroup-name ${azurerm_subnet.compute_subnet.resource_group_name} --resource-group ${azurerm_machine_learning_workspace.aml_ws.resource_group_name} --workspace-name ${azurerm_machine_learning_workspace.aml_ws.name}"
+#  }
+# 
+#  depends_on = [azurerm_machine_learning_workspace.aml_ws]
+#}
 
 # DNS Zones
 
@@ -83,5 +118,5 @@ resource "azurerm_private_endpoint" "ws_pe" {
   }
 
   # Add Private Link after we configured the workspace and attached AKS
-  depends_on = [null_resource.compute_resouces, azurerm_kubernetes_cluster.aml_aks]
+  depends_on = [azurerm_machine_learning_compute_instance.aml_ws, azurerm_kubernetes_cluster.aml_aks]
 }
