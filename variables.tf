@@ -6,7 +6,8 @@
 
 
 variable "resource_group" {
-  default = "ak-ml-rg"
+  #default = "ak-ml-rg"
+  default = "data-analytics-RG"
 }
 
 variable "workspace_display_name" {
@@ -14,12 +15,12 @@ variable "workspace_display_name" {
 }
 
 variable "location" {
-  default = "eastus"
-  #default = "canadacentral"
+  #default = "eastus"
+  default = "canadacentral"
 }
 
 variable "deploy_aks" {
-  default = false
+  default = true
 }
 
 variable "jumphost_username" {
