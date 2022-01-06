@@ -1,4 +1,4 @@
-# Azure Machine Learning Enterprise Terraform Example
+# Azure Machine Learning Enterprise Built w/ Terraform
 
 This repo shows a complete Azure Machine Learning enterprise enviroment via Terraform.
 
