@@ -1,6 +1,6 @@
-# Azure Machine Learning Enterprise Terraform Example
+# Azure Machine Learning Enterprise Built w/ Terraform
 
-This repo shows an example for rolling out a complete Azure Machine Learning enterprise enviroment via Terraform.
+This repo shows a complete Azure Machine Learning enterprise enviroment via Terraform.
 
 ![Deployed resources](media/architecture_aml_pl.png "Deployed resources")
 
@@ -15,7 +15,7 @@ This includes rollout of the following resources:
 * Jumphost (Windows) with Bastion for easy access to the VNET
 * Compute Cluster (in VNET)
 * Compute Instance (in VNET)
-* (Azure Kubernetes Service - disabled by default and still under development)
+* Azure Kubernetes Service (in VNET)
 
 ## Instructions
 
@@ -29,8 +29,6 @@ Make sure you have the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/in
     $ terraform plan
     $ terraform apply
     ```
-
-If you want to deploy AKS, you need to have [Azure Machine Learning CLI installed](https://docs.microsoft.com/en-us/azure/machine-learning/reference-azure-machine-learning-cli).
 
 # Known Limitations
 
