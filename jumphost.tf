@@ -5,6 +5,13 @@
 
 # Jump host for testing VNET and Private Link
 
+resource "azurerm_public_ip" "jumphost_public_ip" {
+  name                = "jumphost_PublicIp"
+  resource_group_name = var.resource_group
+  location            = var.location
+  allocation_method   = "Dynamic"
+}
+
 resource "azurerm_network_interface" "jumphost_nic" {
   name                = "jumphost-nic"
   location            = var.location
@@ -14,7 +21,7 @@ resource "azurerm_network_interface" "jumphost_nic" {
     name                          = "configuration"
     private_ip_address_allocation = "Dynamic"
     subnet_id                     = azurerm_subnet.aml_subnet.id
-    # public_ip_address_id          = azurerm_public_ip.jumphost_public_ip.id
+    public_ip_address_id          = azurerm_public_ip.jumphost_public_ip.id
   }
 }
 
@@ -87,7 +94,7 @@ resource "azurerm_dev_test_global_vm_shutdown_schedule" "jumphost_schedule" {
   enabled            = true
 
   daily_recurrence_time = "2000"
-  timezone              = "W. Europe Standard Time"
+  timezone              = "Eastern Standard Time"
 
   notification_settings {
     enabled = false
