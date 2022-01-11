@@ -1,10 +1,4 @@
-# Copyright (c) 2021 Microsoft
-# 
-# This software is released under the MIT License.
-# https://opensource.org/licenses/MIT
-
 # Azure provide configuration
-
 terraform {
   required_providers {
     azurerm = {
@@ -12,6 +6,13 @@ terraform {
       version = ">= 2.26"
     }
   }
+      backend "azurerm" {
+        resource_group_name  = "data-analytics-rg"
+        storage_account_name = "porchlighttfstate"
+        container_name       = "porchlightmachinelearning"
+        key                  = "terraform.tfstate"
+    }
+
 }
 
 provider "azurerm" {
@@ -19,8 +20,3 @@ provider "azurerm" {
 }
 
 data "azurerm_client_config" "current" {}
-
-#resource "azurerm_resource_group" "ak-ml-rg" {
-#  name     = var.resource_group
-#  location = var.location
-#}

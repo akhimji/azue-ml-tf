@@ -1,3 +1,5 @@
+# Event Hub
+
 resource "azurerm_eventhub_namespace" "aml" {
   name                = "AMLEventHubNamespace"
   resource_group_name = var.resource_group

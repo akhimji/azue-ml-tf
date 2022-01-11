@@ -1,7 +1,4 @@
-# Copyright (c) 2021 Microsoft
-# 
-# This software is released under the MIT License.
-# https://opensource.org/licenses/MIT
+# Bastion host
 
 resource "azurerm_public_ip" "bastion_ip" {
   name                = "${var.prefix}-public-ip-bastion"

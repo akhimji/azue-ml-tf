@@ -1,9 +1,4 @@
-# Copyright (c) 2021 Microsoft
-# 
-# This software is released under the MIT License.
-# https://opensource.org/licenses/MIT
-
-# Azure Kubernetes Service (not deployed per default)
+# Azure Kubernetes Service (AML)
 
 resource "azurerm_kubernetes_cluster" "aml_aks" {
   #count               = var.deploy_aks ? 1 : 0
