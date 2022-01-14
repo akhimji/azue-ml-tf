@@ -63,7 +63,7 @@ resource "azurerm_virtual_machine" "jumphost" {
   os_profile {
     computer_name  = "jumphost"
     admin_username = var.jumphost_username
-    admin_password = var.jumphost_password
+    admin_password = random_password.password.result
   }
 
   os_profile_windows_config {

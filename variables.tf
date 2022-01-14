@@ -24,12 +24,12 @@ variable "deploy_aks" {
 }
 
 variable "jumphost_username" {
-  default = "akadmin"
+  default = "pwcadmin"
 }
 
-variable "jumphost_password" {
-  default = "Ch@ng3m32021!!!"
-}
+#variable "jumphost_password" {
+#  default = "Ch@ng3m32021!!!"
+#}
 
 variable "prefix" {
   type = string
